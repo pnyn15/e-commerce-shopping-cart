@@ -65,7 +65,7 @@
 
     - name: Configure Tomcat users
       copy:
-        dest: /opt/tomcat/conf/tomcat-users.xml
+        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/tomcat-users.xml
         content: |
           <tomcat-users>
             <role rolename="manager-gui"/>
@@ -77,7 +77,7 @@
 
     - name: Configure Tomcat manager access
       copy:
-        dest: /opt/tomcat/conf/Catalina/localhost/manager.xml
+        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
         content: |
           <Context privileged="true" antiResourceLocking="false"
                    docBase="${catalina.home}/webapps/manager">
@@ -89,7 +89,7 @@
 
     - name: Make Tomcat scripts executable
       file:
-        path: /opt/tomcat/bin/catalina.sh
+        path: /opt/tomcat/apache-tomcat-8.5.88/bin/catalina.sh
         mode: '0755'
         owner: tomcat
         group: tomcat
