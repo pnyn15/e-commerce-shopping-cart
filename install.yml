@@ -4,28 +4,26 @@
   become: true
   tasks:
 
-    # Install dependencies
-    - name: Update package cache
-      apt:
-        update_cache: yes
-
     # Install Java
-    - name: Install OpenJDK 17
+    - name: Install OpenJDK 21
       apt:
-        name: openjdk-17-jdk
+        name: openjdk-21-jdk
         state: present
+        update_cache: yes
 
     # Install Maven
     - name: Install Maven
       apt:
         name: maven
         state: present
+        update_cache: yes
 
     # Install MySQL
     - name: Install MySQL Server
       apt:
         name: mysql-server
         state: present
+        update_cache: yes
 
     - name: Start and enable MySQL Service
       service:
