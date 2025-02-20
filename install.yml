@@ -75,8 +75,6 @@
         group: tomcat
         mode: '0644'
 
-    
-
     - name: Make Tomcat scripts executable
       file:
         path: /opt/tomcat/apache-tomcat-8.5.88/bin/catalina.sh
@@ -110,6 +108,15 @@
           WantedBy=multi-user.target
         mode: '0644'
 
+    - name: Reload systemd daemon
+      command: systemctl daemon-reload
+
+    - name: Start and enable Tomcat service
+      service:
+        name: tomcat
+        state: started
+        enabled: yes
+
     - name: Configure Tomcat manager access
       copy:
         dest: /opt/tomcat/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
@@ -122,13 +129,8 @@
         group: tomcat
         mode: '0644'
 
-    # Reload systemd and start Tomcat
-    - name: Reload systemd daemon
-      command: systemctl daemon-reload
-
     - name: Start and enable Tomcat service
       service:
         name: tomcat
         state: started
         enabled: yes
-
