@@ -1,5 +1,5 @@
 - name: Setup Tomcat, MySQL, Java, and Maven
-  hosts: prod
+  hosts: localhost
   become: true
   tasks:
 
