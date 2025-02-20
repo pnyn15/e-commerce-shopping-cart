@@ -75,17 +75,7 @@
         group: tomcat
         mode: '0644'
 
-    - name: Configure Tomcat manager access
-      copy:
-        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
-        content: |
-          <Context privileged="true" antiResourceLocking="false"
-                   docBase="${catalina.home}/webapps/manager">
-            <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="^.*$" />
-          </Context>
-        owner: tomcat
-        group: tomcat
-        mode: '0644'
+    
 
     - name: Make Tomcat scripts executable
       file:
@@ -118,6 +108,18 @@
 
           [Install]
           WantedBy=multi-user.target
+        mode: '0644'
+
+    - name: Configure Tomcat manager access
+      copy:
+        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
+        content: |
+          <Context privileged="true" antiResourceLocking="false"
+                   docBase="${catalina.home}/webapps/manager">
+            <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="^.*$" />
+          </Context>
+        owner: tomcat
+        group: tomcat
         mode: '0644'
 
     # Reload systemd and start Tomcat
