@@ -4,28 +4,26 @@
   become: true
   tasks:
 
-    # Install dependencies
-    - name: Update package cache
-      apt:
-        update_cache: yes
-
     # Install Java
-    - name: Install OpenJDK 17
+    - name: Install OpenJDK 21
       apt:
-        name: openjdk-17-jdk
+        name: openjdk-21-jdk
         state: present
+        update_cache: yes
 
     # Install Maven
     - name: Install Maven
       apt:
         name: maven
         state: present
+        update_cache: yes
 
     # Install MySQL
     - name: Install MySQL Server
       apt:
         name: mysql-server
         state: present
+        update_cache: yes
 
     - name: Start and enable MySQL Service
       service:
@@ -57,8 +55,6 @@
         src: /opt/apache-tomcat-8.5.88.tar.gz
         dest: /opt/tomcat
         remote_src: yes
-        owner: tomcat
-        group: tomcat
 
     - name: Set permissions for Tomcat
       file:
@@ -112,7 +108,7 @@
           Type=forking
           User=tomcat
           Group=tomcat
-          Environment="JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64"
+          Environment="JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64"
           Environment="CATALINA_BASE=/opt/tomcat"
           Environment="CATALINA_HOME=/opt/tomcat"
           Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
@@ -123,7 +119,7 @@
 
           [Install]
           WantedBy=multi-user.target
-        mode: '0644'
+      mode: '0644'
 
     # Reload systemd and start Tomcat
     - name: Reload systemd daemon
@@ -134,4 +130,3 @@
         name: tomcat
         state: started
         enabled: yes
-
