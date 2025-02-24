@@ -101,8 +101,8 @@
           User=tomcat
           Group=tomcat
           Environment="JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64"
-          Environment="CATALINA_HOME=/opt/tomcat/"
-          Environment="CATALINA_BASE=/opt/tomcat/"
+          Environment="CATALINA_HOME=/opt/tomcat"
+          Environment="CATALINA_BASE=/opt/tomcat"
           Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
           Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
           Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
