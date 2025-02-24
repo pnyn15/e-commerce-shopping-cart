@@ -58,6 +58,7 @@
         remote_src: yes
         owner: tomcat
         group: tomcat
+        extra_opts: [--strip-components=1]
 
     - name: Set permissions for Tomcat
       file:
