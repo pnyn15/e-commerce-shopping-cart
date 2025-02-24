@@ -53,7 +53,7 @@
 
     - name: Extract Tomcat
       unarchive:
-        src: /opt/apache-tomcat-8.5.88.tar.gz
+        src: /opt/tomcat/apache-tomcat-8.5.88.tar.gz
         dest: /opt/tomcat/
         remote_src: yes
         owner: tomcat
