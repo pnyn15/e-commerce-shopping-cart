@@ -41,19 +41,19 @@
     - name: Download Tomcat 8
       get_url:
         url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.88/bin/apache-tomcat-8.5.88.tar.gz
-        dest: /opt/apache-tomcat-8.5.88.tar.gz
+        dest: /opt/tomcat/apache-tomcat-8.5.88.tar.gz
 
     - name: Extract Tomcat
       unarchive:
         src: /opt/apache-tomcat-8.5.88.tar.gz
-        dest: /opt/
+        dest: /opt/tomcat/
         remote_src: yes
         owner: tomcat
         group: tomcat
 
     - name: Set permissions for Tomcat
       file:
-        path: /opt/apache-tomcat-8.5.88
+        path: /opt/tomcat/apache-tomcat-8.5.88
         owner: tomcat
         group: tomcat
         mode: '0755'
@@ -61,7 +61,7 @@
 
     - name: Configure Tomcat users
       copy:
-        dest: /opt/apache-tomcat-8.5.88/conf/tomcat-users.xml
+        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/tomcat-users.xml
         content: |
           <tomcat-users>
             <role rolename="manager-gui"/>
@@ -73,7 +73,7 @@
 
     - name: Make Tomcat scripts executable
       file:
-        path: /opt/apache-tomcat-8.5.88/bin/catalina.sh
+        path: /opt/tomcat/apache-tomcat-8.5.88/bin/catalina.sh
         mode: '0755'
         owner: tomcat
         group: tomcat
@@ -116,7 +116,7 @@
 
     - name: Configure Tomcat manager access
       copy:
-        dest: /opt/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
+        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
         content: |
           <Context privileged="true" antiResourceLocking="false"
                    docBase="${catalina.home}/webapps/manager">
