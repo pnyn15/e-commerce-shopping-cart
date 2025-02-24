@@ -28,6 +28,14 @@
       group:
         name: tomcat
         state: present
+    - name: Ensure /opt/tomcat directory exists
+      file:
+        path: /opt/tomcat
+        state: directory
+        owner: tomcat
+        group: tomcat
+        mode: '0755'
+
 
     - name: Create Tomcat user
       user:
