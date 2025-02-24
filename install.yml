@@ -134,3 +134,10 @@
         name: tomcat
         state: started
         enabled: yes
+    - name: Set permissions for Tomcat
+      file:
+        path: /opt/tomcat
+        owner: tomcat
+        group: tomcat
+        mode: '0755'
+        recurse: yes
