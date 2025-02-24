@@ -62,7 +62,7 @@
 
     - name: Set permissions for Tomcat
       file:
-        path: /opt/tomcat/apache-tomcat-8.5.88
+        path: /opt/tomcat/
         owner: tomcat
         group: tomcat
         mode: '0755'
@@ -70,7 +70,7 @@
 
     - name: Configure Tomcat users
       copy:
-        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/tomcat-users.xml
+        dest: /opt/tomcat/conf/tomcat-users.xml
         content: |
           <tomcat-users>
             <role rolename="manager-gui"/>
@@ -82,7 +82,7 @@
 
     - name: Make Tomcat scripts executable
       file:
-        path: /opt/tomcat/apache-tomcat-8.5.88/bin/catalina.sh
+        path: /opt/tomcat/bin/catalina.sh
         mode: '0755'
         owner: tomcat
         group: tomcat
@@ -101,13 +101,13 @@
           User=tomcat
           Group=tomcat
           Environment="JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64"
-          Environment="CATALINA_HOME=/opt/tomcat/apache-tomcat-8.5.88"
-          Environment="CATALINA_BASE=/opt/tomcat/apache-tomcat-8.5.88"
-          Environment="CATALINA_PID=/opt/tomcat/apache-tomcat-8.5.88/temp/tomcat.pid"
+          Environment="CATALINA_HOME=/opt/tomcat/"
+          Environment="CATALINA_BASE=/opt/tomcat/"
+          Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
           Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
           Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
-          ExecStart=/bin/su - tomcat -c "/opt/tomcat/apache-tomcat-8.5.88/bin/startup.sh"
-          ExecStop=/bin/su - tomcat -c "/opt/tomcat/apache-tomcat-8.5.88/bin/shutdown.sh"
+          ExecStart=/bin/su - tomcat -c "/opt/tomcat/bin/startup.sh"
+          ExecStop=/bin/su - tomcat -c "/opt/tomcat/bin/shutdown.sh"
           Restart=on-failure
 
           [Install]
@@ -125,7 +125,7 @@
 
     - name: Configure Tomcat manager access
       copy:
-        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
+        dest: /opt/tomcat/conf/Catalina/localhost/manager.xml
         content: |
           <Context privileged="true" antiResourceLocking="false"
                    docBase="${catalina.home}/webapps/manager">
