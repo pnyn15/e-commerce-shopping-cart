@@ -106,8 +106,8 @@
           Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
           Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
           Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
-          ExecStart=/bin/su - tomcat -c "/opt/tomcat/bin/startup.sh"
-          ExecStop=/bin/su - tomcat -c "/opt/tomcat/bin/shutdown.sh"
+          ExecStart=/opt/tomcat/bin/startup.sh
+          ExecStop=/opt/tomcat/bin/shutdown.sh
           Restart=on-failure
 
           [Install]
