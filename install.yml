@@ -148,9 +148,7 @@
         group: tomcat
         mode: '0755'
         recurse: yes
-- name: Create schema in MySQL
-  hosts: db_servers
-  become: true
-  tasks:
-    - name: Execute SQL script to create schema
-      command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 < /home/ubuntu/create_schema.sql
+    - name: Create schema in MySQL
+      tasks:
+        - name: Execute SQL script to create schema
+          command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 < /home/ubuntu/create_schema.sql
