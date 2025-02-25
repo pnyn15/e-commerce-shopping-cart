@@ -167,7 +167,7 @@
   tasks:
     - name: Create database shopping-cart
       community.mysql.mysql_db:
-        login_host: database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com
+        login_host: projectrds.c76ckiksylbb.us-east-2.rds.amazonaws.com
         login_user: admin
         login_password: root12345
         name: shopping-cart
@@ -175,7 +175,7 @@
 
     - name: Execute SQL script to create schema
       community.mysql.mysql_db:
-        login_host: database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com
+        login_host: projectrds.c76ckiksylbb.us-east-2.rds.amazonaws.com
         login_user: admin
         login_password: root12345
         name: shopping-cart
