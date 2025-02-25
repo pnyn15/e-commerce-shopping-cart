@@ -156,7 +156,19 @@
   become: true
   tasks:
     - name: Create database shopping-cart
-      command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 -e "CREATE DATABASE IF NOT EXISTS `shopping-cart`;"
+      community.mysql.mysql_db:
+        login_host: database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com
+        login_user: admin
+        login_password: root12345
+        name: shopping-cart
+        state: present
 
     - name: Execute SQL script to create schema
-      command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 shopping-cart < /home/ubuntu/create_schema.sql
+      community.mysql.mysql_db:
+        login_host: database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com
+        login_user: admin
+        login_password: root12345
+        name: shopping-cart
+        state: import
+        target: /home/ubuntu/create_schema.sql
+
