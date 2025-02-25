@@ -148,6 +148,14 @@
         mode: '0755'
         recurse: yes
 
+- name: Install MySQL Python dependencies
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install PyMySQL for MySQL support
+      apt:
+        name: python3-pymysql
+        state: present
 
 
 
