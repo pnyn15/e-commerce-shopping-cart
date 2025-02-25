@@ -3,13 +3,6 @@
   become: true
   tasks:
 
-    # Install Java
-    - name: Install OpenJDK 21
-      apt:
-        name: openjdk-21-jdk
-        state: present
-        update_cache: yes
-
     # Install Maven
     - name: Install Maven
       apt:
@@ -36,28 +29,40 @@
         name: tomcat
         state: present
 
+    - name: Ensure /opt/tomcat directory exists
+      file:
+        path: /opt/tomcat
+        state: directory
+        owner: tomcat
+        group: tomcat
+        mode: '0755'
+
     - name: Create Tomcat user
       user:
         name: tomcat
         group: tomcat
         home: /opt/tomcat
         shell: /bin/bash
+        createhome: no
 
     # Install Tomcat
     - name: Download Tomcat 8
       get_url:
         url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.88/bin/apache-tomcat-8.5.88.tar.gz
-        dest: /opt/apache-tomcat-8.5.88.tar.gz
+        dest: /opt/tomcat/apache-tomcat-8.5.88.tar.gz
 
     - name: Extract Tomcat
       unarchive:
-        src: /opt/apache-tomcat-8.5.88.tar.gz
+        src: /opt/tomcat/apache-tomcat-8.5.88.tar.gz
         dest: /opt/tomcat
         remote_src: yes
+        owner: tomcat
+        group: tomcat
+        extra_opts: [--strip-components=1]
 
     - name: Set permissions for Tomcat
       file:
-        path: /opt/tomcat
+        path: /opt/tomcat/
         owner: tomcat
         group: tomcat
         mode: '0755'
@@ -65,7 +70,7 @@
 
     - name: Configure Tomcat users
       copy:
-        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/tomcat-users.xml
+        dest: /opt/tomcat/conf/tomcat-users.xml
         content: |
           <tomcat-users>
             <role rolename="manager-gui"/>
@@ -77,7 +82,7 @@
 
     - name: Make Tomcat scripts executable
       file:
-        path: /opt/tomcat/apache-tomcat-8.5.88/bin/catalina.sh
+        path: /opt/tomcat/bin/catalina.sh
         mode: '0755'
         owner: tomcat
         group: tomcat
@@ -96,13 +101,14 @@
           User=tomcat
           Group=tomcat
           Environment="JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64"
-          Environment="CATALINA_HOME=/opt/tomcat/apache-tomcat-8.5.88"
-          Environment="CATALINA_BASE=/opt/tomcat/apache-tomcat-8.5.88"
-          Environment="CATALINA_PID=/opt/tomcat/apache-tomcat-8.5.88/temp/tomcat.pid"
+          Environment="CATALINA_HOME=/opt/tomcat"
+          Environment="CATALINA_BASE=/opt/tomcat"
+          Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
           Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
           Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
-          ExecStart=/opt/tomcat/apache-tomcat-8.5.88/bin/startup.sh
-          ExecStop=/opt/tomcat/apache-tomcat-8.5.88/bin/shutdown.sh
+          ExecStart=/opt/tomcat/bin/startup.sh
+          ExecStop=/opt/tomcat/bin/shutdown.sh
+          Restart=on-failure
 
           [Install]
           WantedBy=multi-user.target
@@ -119,7 +125,7 @@
 
     - name: Configure Tomcat manager access
       copy:
-        dest: /opt/tomcat/apache-tomcat-8.5.88/conf/Catalina/localhost/manager.xml
+        dest: /opt/tomcat/conf/Catalina/localhost/manager.xml
         content: |
           <Context privileged="true" antiResourceLocking="false"
                    docBase="${catalina.home}/webapps/manager">
@@ -129,11 +135,12 @@
         group: tomcat
         mode: '0644'
 
-    - name: Start and enable Tomcat service
+    - name: Restart Tomcat to apply changes
       service:
         name: tomcat
-        state: started
+        state: restarted
         enabled: yes
+
     - name: Set permissions for Tomcat
       file:
         path: /opt/tomcat
@@ -141,3 +148,11 @@
         group: tomcat
         mode: '0755'
         recurse: yes
+
+- name: Create schema in MySQL
+  hosts: db_servers
+  become: true
+  tasks:
+    - name: Execute SQL script to create schema
+      command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 < /home/ubuntu/create_schema.sql
+
