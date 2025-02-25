@@ -152,6 +152,8 @@
 
 
 - name: Create schema in MySQL
+  hosts: localhost
+  become: true
   tasks:
     - name: Create database shopping-cart
       command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 -e "CREATE DATABASE IF NOT EXISTS \`shopping-cart\`;"
