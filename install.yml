@@ -29,13 +29,7 @@
         name: tomcat
         state: present
 
-    - name: Ensure /opt/tomcat directory exists
-      file:
-        path: /opt/tomcat
-        state: directory
-        owner: tomcat
-        group: tomcat
-        mode: '0755'
+    
 
     - name: Create Tomcat user
       user:
@@ -44,6 +38,14 @@
         home: /opt/tomcat
         shell: /bin/bash
         createhome: no
+
+    - name: Ensure /opt/tomcat directory exists
+      file:
+        path: /opt/tomcat
+        state: directory
+        owner: tomcat
+        group: tomcat
+        mode: '0755'
 
     # Install Tomcat
     - name: Download Tomcat 8
