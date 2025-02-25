@@ -1,3 +1,4 @@
+
 - name: Setup Tomcat, MySQL, Java, and Maven
   hosts: localhost
   become: true
@@ -28,8 +29,14 @@
       group:
         name: tomcat
         state: present
+    - name: Ensure /opt/tomcat directory exists
+      file:
+        path: /opt/tomcat
+        state: directory
+        owner: tomcat
+        group: tomcat
+        mode: '0755'
 
-    
 
     - name: Create Tomcat user
       user:
@@ -38,14 +45,6 @@
         home: /opt/tomcat
         shell: /bin/bash
         createhome: no
-
-    - name: Ensure /opt/tomcat directory exists
-      file:
-        path: /opt/tomcat
-        state: directory
-        owner: tomcat
-        group: tomcat
-        mode: '0755'
 
     # Install Tomcat
     - name: Download Tomcat 8
@@ -142,7 +141,6 @@
         name: tomcat
         state: restarted
         enabled: yes
-
     - name: Set permissions for Tomcat
       file:
         path: /opt/tomcat
@@ -150,11 +148,9 @@
         group: tomcat
         mode: '0755'
         recurse: yes
-
 - name: Create schema in MySQL
   hosts: db_servers
   become: true
   tasks:
     - name: Execute SQL script to create schema
       command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 < /home/ubuntu/create_schema.sql
-
