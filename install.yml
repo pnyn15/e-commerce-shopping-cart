@@ -28,7 +28,6 @@
       group:
         name: tomcat
         state: present
-
     - name: Ensure /opt/tomcat directory exists
       file:
         path: /opt/tomcat
@@ -36,6 +35,7 @@
         owner: tomcat
         group: tomcat
         mode: '0755'
+
 
     - name: Create Tomcat user
       user:
@@ -140,7 +140,6 @@
         name: tomcat
         state: restarted
         enabled: yes
-
     - name: Set permissions for Tomcat
       file:
         path: /opt/tomcat
@@ -149,7 +148,12 @@
         mode: '0755'
         recurse: yes
 
+
+
+
 - name: Create schema in MySQL
+  hosts: db_servers
+  become: true
   tasks:
     - name: Create database shopping-cart
       command: mysql -h database-1.c76ckiksylbb.us-east-2.rds.amazonaws.com -u admin -proot12345 -e "CREATE DATABASE IF NOT EXISTS \`shopping-cart\`;"
